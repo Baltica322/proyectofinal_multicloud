@@ -1,0 +1,203 @@
+{% load static %}
+{% block container %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'crearcotizacion.css' %}">
+    <title>Cribortech</title>
+    <style>
+  
+        .formulario-resultados {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f9f9f9;
+        }
+        .formulario-resultados label {
+            display: block;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .formulario-resultados input {
+            width: 100%;
+            padding: 6px;
+            margin-top: 2px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1 id="titulo1">Cribortech</h1>
+        <div class="nav_links">
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+            <a href="{% url 'customizar' %}">Customizar PC</a>
+            <a href="{% url 'perfilusuario' %}" class="perfil">Perfil</a>
+            <a href="{% url 'logout' %}" class="btn1">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="customizar_pc">
+        <h2>Editar Procesador</h2>
+
+        <!-- Formulario de búsqueda -->
+            <form id="formulario-buscar" method="GET" action="{% url 'editarprocesador' %}">
+                <label>Ingrese el modelo o fabricante a buscar:</label>
+                <input type="text" name="consulta" placeholder="Ej: Ryzen 5 5600X" value="{{ consulta|default:'' }}" required>
+                <br><br>
+                <button type="submit" class="btn btn-info" id="btn-agregar-abajo">Buscar</button>
+            <a href="{% url 'adminprocesador' %}" id="btn-volver-buscar">Volver</a>
+            </form>
+        <!-- Resultados de búsqueda como formulario readonly -->
+        {% if consulta %}
+            <h3>Resultados de búsqueda para: "{{ consulta }}"</h3>
+            {% if resultados %}
+                {% for procesador in resultados %}
+                    <!-- FORMULARIO READONLY -->
+                    <div class="formulario-resultados" id="vista-{{ procesador.id }}">
+                    <label>Fabricante:</label>
+                    <input type="text" value="{{ procesador.fabricante }}" readonly>
+
+                    <label>Modelo:</label>
+                    <input type="text" value="{{ procesador.modelo }}" readonly>
+
+                    <label>Frecuencia:</label>
+                    <input type="text" value="{{ procesador.frecuencia }}" readonly>
+
+                    <label>Núcleos:</label>
+                    <input type="text" value="{{ procesador.nucleos }}" readonly>
+
+                    <label>Hilos:</label>
+                    <input type="text" value="{{ procesador.hilos }}" readonly>
+
+                    <label>Socket:</label>
+                    <input type="text" value="{{ procesador.socket }}" readonly>
+
+                    <label>Stock:</label>
+                    <input type="text" value="{{ procesador.stock }}" readonly>
+
+                    <label>Precio:</label>
+                    <input type="text" value="{{ procesador.precio }}" readonly>
+
+                    <br><br>
+                    <button type="button" onclick="mostrarFormularioEditable({{ procesador.id }})" id="btn-volver-buscar">Editar</button>
+                    </div>
+
+                    <!-- FORMULARIO EDITABLE (OCULTO) -->
+                    <form method="POST" action="{% url 'editarprocesador_confirmado' procesador.id %}" class="formulario-resultados" id="editar-{{ procesador.id }}" style="display: none;">
+                    {% csrf_token %}
+                    <label>Fabricante:</label>
+                    <input type="text" name="fabricante" value="{{ procesador.fabricante }}" required pattern="^[A-Za-z0-9\s\-]{2,}$" title="Mínimo 2 caracteres. Letras, números y guiones" maxlength="10">
+
+                    <label>Modelo:</label>
+                    <input type="text" name="modelo" value="{{ procesador.modelo }}" maxlength="20">
+
+                    <label>Frecuencia:</label>
+                    <input type="text" name="frecuencia" id="cpu_frecuencia" value="{{ procesador.frecuencia }}" required pattern="^[0-9]{3,5}\s?(Mhz)?$" title="Ejemplo: 3200 Mhz" maxlength="5">
+
+                    <label>Núcleos:</label>
+                    <input type="number" id="nucleos" name="nucleos" min="1" max="99" required value="{{ procesador.nucleos }}" placeholder="Ej: 8">
+
+                    <label>Hilos:</label>
+                    <input type="number" id="hilos" name="hilos" min="1" max="99" required value="{{ procesador.hilos }}" placeholder="Ej: 16">
+
+                    <label>Socket:</label>
+                    <select name="socket" required>
+                        {% for socket in sockets %}
+                            <option value="{{ socket.nombre }}" {% if socket.nombre == procesador.socket %}selected{% endif %}>
+                                {{ socket.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <label>Stock:</label>
+                    <input type="number" id="stock" name="stock" value="{{ procesador.stock }}" required min="0" max="300" placeholder="Ej: 120">
+
+
+                    <label>Precio:</label>
+                    <input type="number" name="precio" value="{{ procesador.precio }}" required min="1" step="0.01" max="800000">
+
+               
+
+                    <br><br>
+                    <button type="submit" id="btn-agregar-abajo">Guardar</button>
+                    </form>
+                {% endfor %}
+            {% else %}
+                <p>No se encontraron procesadores con ese término.</p>
+            {% endif %}
+            
+        {% endif %}
+    </div>
+
+  <script>
+function habilitarEdicion(botonEditar) {
+    const formulario = botonEditar.closest('form');
+    const inputs = formulario.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.removeAttribute('readonly');
+        input.style.backgroundColor = '#fff'; // mejora visual
+    });
+}
+function mostrarFormularioEditable(id) {
+    // Oculta la vista readonly
+    const vista = document.getElementById('vista-' + id);
+    vista.style.display = 'none';
+
+    // Muestra el formulario editable
+    const editar = document.getElementById('editar-' + id);
+    editar.style.display = 'block';
+}
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            alert('Por favor, complete correctamente todos los campos antes de guardar.');
+        }
+    });
+});
+
+document.getElementById("cpu_frecuencia").addEventListener("blur", function() {
+    let valor = this.value.trim();
+
+    // Verifica si ya tiene "Mhz"
+    if (valor !== "" && !valor.toLowerCase().includes("mhz")) {
+        this.value = valor + " Mhz";
+    }
+});
+
+document.getElementById("nucleos").addEventListener("input", function() {
+    if (this.value.length > 2) {
+        this.value = this.value.slice(0, 2);
+    }
+});
+document.getElementById("hilos").addEventListener("input", function() {
+    if (this.value.length > 2) {
+        this.value = this.value.slice(0, 2);
+    }
+});
+
+
+document.getElementById("stock").addEventListener("input", function() {
+    // Limitar visualmente a 3 dígitos
+    if (this.value.length > 3) {
+        this.value = this.value.slice(0, 3);
+    }
+
+    // Limitar a un máximo de 300
+    if (parseInt(this.value) > 300) {
+        this.value = 300;
+    }
+});
+</script>
+
+</body>
+</html>
+{% endblock container %}

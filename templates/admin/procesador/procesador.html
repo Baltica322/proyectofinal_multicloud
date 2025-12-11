@@ -1,0 +1,170 @@
+{% block container %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'crearcotizacion.css' %}">
+    <title>Agregar o Buscar Procesador</title>
+    <style>
+        #formulario-cpu, #formulario-buscar {
+            display: none; /* Ocultos al inicio */
+        }
+    </style>
+</head>
+
+<body>  
+    <div class="navbar">
+        <h1 id="titulo1">Cribortech</h1>
+        <div class="nav_links">
+            <a href="#">Inicio</a>
+            <a href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+            <a href="{% url 'customizar' %}">Customizar PC</a>
+            <a href="{% url 'perfilusuario' %}" class="perfil">Perfil</a>
+            <a href="{% url 'logout' %}" class="btn1">Cerrar Sesión</a>
+        </div>
+    </div>
+        
+    <div class="customizar_pc">
+        <h2>PROCESADOR</h2>
+        
+        <!-- Botones para mostrar formularios -->
+        <button id="btn-agregar" class="btn btn-primary">Agregar Procesador</button>
+        <button id="btn-buscar" class="btn btn-primary">Buscar Procesador</button>
+        <button id="btn-editar" class="btn btn-primary">Editar Procesador</button>  
+        <button id="btn-eliminar" class="btn btn-primary">Eliminar Procesador</button>
+        <button id="btn-volver">Volver</a></button>
+        
+        <!-- Formulario Agregar Procesador -->
+        <form id="formulario-cpu" method="POST">
+            {% csrf_token %}
+
+            <label>Fabricante:</label>
+            <input type="text" name="cpu_fabricante" required maxlength="8">
+
+            <label>Modelo:</label>
+            <input type="text" name="cpu_modelo" required maxlength="20">
+
+            <label>Frecuencia:</label>
+            <input type="text" id="cpu_frecuencia" name="cpu_frecuencia" placeholder="Ej: 3200" maxlength="5" required>
+
+            <label>Núcleos:</label>
+            <input type="number" name="cpu_nucleos" required>
+
+            <label>Hilos:</label>
+            <input type="number" name="cpu_hilos" required>
+
+            <label>Socket:</label>
+            <select name="cpu_socket" required>
+                <option value="">--Seleccione Socket--</option>
+                {% for s in socket %}
+                    <option value="{{ s.id }}">{{ s.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Stock:</label>
+            <input type="number" name="cpu_stock" required>
+
+            <label>Precio:</label>
+            <input type="number" name="cpu_precio" required>
+
+            <br><br>
+            <button type="submit" id="btn-agregar-abajo">Agregar</button>
+            <button type="button" id="btn-volver-agregar" class="btn btn-secondary">Volver</button>
+        </form>
+
+        <!-- Formulario Buscar Procesador -->
+        <form id="formulario-buscar" method="GET" action="{% url 'buscarprocesador' %}" >
+            <label>Ingrese el modelo o fabricante a buscar:</label>
+            <input type="text" name="consulta" placeholder="Ej: Ryzen 5 5600X" required>
+            <br><br>
+            <button type="submit" class="btn btn-info" id="btn-agregar-abajo">Buscar</button>
+            <button type="button" id="btn-volver-buscar" class="btn btn-secondary">Volver</button>
+        </form>
+
+        {% if consulta %}
+            <h3>Resultados de búsqueda para: "{{ consulta }}"</h3>
+            {% if resultados %}
+                <ul>
+                    {% for procesador in resultados %}
+                        <li>{{ procesador.fabricante }} - {{ procesador.modelo }} - {{ procesador.frecuencia }} - {{ procesador.precio }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se encontraron procesadores con ese término.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <script>
+        const btnAgregar = document.getElementById('btn-agregar');
+        const btnBuscar = document.getElementById('btn-buscar');
+        const formularioAgregar = document.getElementById('formulario-cpu');
+        const formularioBuscar = document.getElementById('formulario-buscar');
+        const btnVolverAgregar = document.getElementById('btn-volver-agregar');
+        const btnVolverBuscar = document.getElementById('btn-volver-buscar');
+        const btnEliminar = document.getElementById('btn-eliminar');
+        const btnEditar = document.getElementById('btn-editar');
+        const btnVolver = document.getElementById('btn-volver');
+
+        btnAgregar.addEventListener('click', function() {
+            formularioAgregar.style.display = 'block';
+            btnAgregar.style.display = 'none';
+            btnBuscar.style.display = 'none';
+            btnEditar.style.display = 'none';
+            btnEliminar.style.display = 'none';
+            btnVolver.style.display = 'none';
+        });
+        btnBuscar.addEventListener('click', function() {
+            formularioBuscar.style.display = 'block';
+            btnAgregar.style.display = 'none';
+            btnBuscar.style.display = 'none';
+            btnEditar.style.display = 'none';
+            btnEliminar.style.display = 'none';
+            btnVolver.style.display = 'none';
+        });
+
+        btnVolverAgregar.addEventListener('click', function() {
+            formularioAgregar.style.display = 'none';
+            btnAgregar.style.display = 'inline-block';
+            btnBuscar.style.display = 'inline-block';
+            btnEditar.style.display = 'inline-block';
+            btnEliminar.style.display = 'inline-block';
+            btnVolver.style.display = 'inline-block';
+            formularioAgregar.reset(); // Opcional: limpia campos
+        });
+
+        btnVolverBuscar.addEventListener('click', function() {
+            formularioBuscar.style.display = 'none';
+            btnAgregar.style.display = 'inline-block';
+            btnBuscar.style.display = 'inline-block';
+            btnEditar.style.display = 'inline-block';
+            btnEliminar.style.display = 'inline-block';
+            btnVolver.style.display = 'inline-block';
+            formularioBuscar.reset(); // Opcional: limpia campos
+        });
+        btnEditar.addEventListener('click', function() {
+            window.location.href = "{% url 'editarprocesador' %}";
+        });
+        btnEliminar.addEventListener('click', function() {
+            window.location.href = "{% url 'eliminarprocesador' %}";
+        });
+        btnVolver.addEventListener('click', function() {
+            window.location.href = "{% url 'panel_admin' %}";
+        });
+
+        document.getElementById("cpu_frecuencia").addEventListener("blur", function() {
+            let valor = this.value.trim();
+
+            // Verifica si ya tiene "Mhz"
+            if (valor !== "" && !valor.toLowerCase().includes("mhz")) {
+                this.value = valor + " Mhz";
+            }
+        });
+
+
+    </script>
+</body>
+</html>
+{% endblock container %}

@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
+
+body{
+    overflow: hidden;
+    
+}
+
+*{
+    margin: 0;
+    position: static;
+}
+#titulo1{
+    font-family: "Zen Dots", sans-serif;
+    position: relative;
+    left: 7px;
+    color: aliceblue;
+    bottom: -1px;
+}
+.btn1{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    text-decoration: none;
+    border: 2px solid;
+    border-radius: 3px;
+    bottom: 0px;
+    padding: 10px 15px;
+    border-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    background-color: #8a2be2;
+    cursor: pointer;
+    bottom: 2px;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+.btn1:hover {
+    opacity: 0.8;
+}
+@keyframes rgbBorderBottom {
+    0% {
+        border-color: #8a2be2; /* púrpura intenso */
+    }
+    33% {
+        border-color: #ff00ff; /* fucsia neón */
+    }
+    66% {
+        border-color: #00ffff; /* cian neón */
+    }
+    100% {
+        border-color: #8a2be2;
+    }
+}
+.navbar{
+    border-bottom: 4px solid;
+    position: relative;
+    display: flex;
+    background-color: rgb(44, 43, 43);
+    padding: 16px 5px;
+    animation: rgbBorderBottom 3s linear infinite;
+}
+.nav_links{
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    bottom: -10px;
+    left: 405px;
+    display: flex;
+    gap: 25px; /* separa los links */
+}
+.nav_links a {
+    color:aliceblue;
+    text-decoration: none;
+    font-weight: bold;
+    left: -55px;
+    position: relative;
+    padding:  15px;
+    transition: color 0.3s ease;
+}
+
+.nav_links a:hover {
+    color: #989798; /* cambia a fucsia al pasar el mouse */
+}
+.footer{
+    position: relative;
+    bottom: -1000px;
+    border: 1px solid
+}
+.sobre-nosotros {
+    background-color: #1e1e2f;
+    color: #ffffff;
+    padding: 50px 20px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sobre-nosotros .contenido {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.sobre-nosotros h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #00ffc8;
+}
+
+.sobre-nosotros p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.sobre-nosotros .firma {
+    font-style: italic;
+    font-weight: bold;
+    color: #00ffc8;
+}

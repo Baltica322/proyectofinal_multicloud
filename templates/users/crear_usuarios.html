@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'registrarse.css' %}">
+    <title>Cribortech</title>
+</head>
+<body>
+    <div class="login">
+    <form method="POST" action="" class="formulario">
+    {% csrf_token %}
+
+    <h3>Crea tu cuenta</h3>
+
+    <div class="colum_formulario">
+        <label for="username">Usuario</label>
+        <input type="text" name="username" id="username">
+        <span id="username_error" class="error" style="color:red;"></span>
+    </div>
+
+    <div class="colum_formulario">
+        <label for="password">Contraseña</label>
+        <input type="password" name="password" id="password">
+        <span id="password_error" class="error" style="color:red;"></span>
+    </div>
+
+    <div class="colum_formulario">
+        <label for="email">Correo</label>
+        <input type="email" name="email" id="email">
+        <span id="email_error" class="error" style="color:red;"></span>
+    </div>
+
+    <div class="colum_formulario">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" id="nombre">
+        <span id="nombre_error" class="error" style="color:red;"></span>
+    </div>
+
+    <div class="colum_formulario">
+        <label for="apellido">Apellido</label>
+        <input type="text" name="apellido" id="apellido">
+        <span id="apellido_error" class="error" style="color:red;"></span>
+    </div>
+
+    <div class="btn_form">
+        <button type="submit">Crear usuario</button>
+    </div>
+</form>
+
+    </div>    
+</body>
+
+<script src="{% static 'js/registrarse.js' %}"></script>
+</html>

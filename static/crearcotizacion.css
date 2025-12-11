@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
+
+body{
+    overflow: scroll;
+    
+}
+/* Estilo personalizado solo para los botones de acciones de procesador */
+button#btn-agregar,
+button#btn-buscar,
+button#btn-editar,
+button#btn-eliminar {
+    background-color: #8a2be2; /* azul moderno */
+    color: white;
+    padding: 12px 20px;
+    margin: 8px 6px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Efecto hover */
+button#btn-agregar:hover,
+button#btn-buscar:hover,
+button#btn-editar:hover,
+button#btn-eliminar:hover {
+    background-color: #560495;
+    
+}
+button#btn-volver {
+    background-color: #ff0000; /* azul moderno */
+    color: white;
+    padding: 12px 20px;
+    margin: 8px 45%;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+button#btn-agregar-abajo {
+    background-color: #10c488; /* azul moderno */
+    color: white;
+    padding: 12px 20px;
+    margin: 8px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+button#btn-volver-agregar{
+    background-color: #ff0000; 
+    color: white;
+    padding: 12px 20px;
+    margin: 8px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#btn-volver-buscar {
+    background-color: #ff0000;
+    color: white;
+    padding: 12px 20px;
+    margin: 8px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+*{
+    margin: 0;
+    position: static;
+}
+
+#titulo1{
+    font-family: "Zen Dots", sans-serif;
+    position: relative;
+    left: 7px;
+    color: aliceblue;
+    bottom: -1px;
+}
+.btn1{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    left: 1500px;
+    text-decoration: none;
+    border: 2px solid;
+    border-radius: 3px;
+    padding: 10px 20px;
+    border-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    background-color: #8a2be2;
+    cursor: pointer;
+    bottom: 2px;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+.btn1:hover {
+    opacity: 0.8;
+}
+@keyframes rgbBorderBottom {
+    0% {
+        border-color: #8a2be2; /* púrpura intenso */
+    }
+    33% {
+        border-color: #ff00ff; /* fucsia neón */
+    }
+    66% {
+        border-color: #00ffff; /* cian neón */
+    }
+    100% {
+        border-color: #8a2be2;
+    }
+}
+.navbar{
+    border-bottom: 4px solid;
+    position: relative;
+    display: flex;
+    background-color: rgb(44, 43, 43);
+    padding: 16px 5px;
+    animation: rgbBorderBottom 3s linear infinite;
+}
+.nav_links{
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    bottom: -10px;
+    left: 405px;
+    display: flex;
+    gap: 25px; /* separa los links */
+}
+.nav_links a {
+    color:aliceblue;
+    text-decoration: none;
+    font-weight: bold;
+    left: -55px;
+    position: relative;
+    padding: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav_links a:hover {
+    color: #989798; /* cambia a fucsia al pasar el mouse */
+}
+.footer{
+    position: relative;
+    bottom: -1000px;
+    border: 1px solid
+}
+
+.customizar_pc {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    width: 70%;
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.15);
+    border: 2px solid #8a2be2;
+    animation: rgbBorderBottom 3s linear infinite;
+}
+
+.customizar_pc h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: "Zen Dots", sans-serif;
+    color: #8a2be2;
+}
+
+form label {
+    display: block;
+    margin-top: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+form select,
+form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border 0.3s;
+}
+
+form select:focus,
+form input[type="text"]:focus {
+    border-color: #8a2be2;
+    outline: none;
+}
+
+.btn_form {
+    width: 100%;
+    margin-top: 30px;
+    padding: 12px;
+    background-color: #8a2be2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn_form:hover {
+    background-color: #6a1cb9;
+}
+
+.detalle-componente {
+    background-color: #eaeaea;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}

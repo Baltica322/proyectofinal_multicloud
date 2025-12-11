@@ -1,0 +1,106 @@
+{% load static %}
+{% block container %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'crearcotizacion.css' %}">
+    <title>Cribortech</title>
+    <style>
+        #formulario-buscar {
+            margin-top: 20px;
+        }
+        .formulario-resultados {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f9f9f9;
+        }
+        .formulario-resultados label {
+            display: block;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .formulario-resultados input {
+            width: 100%;
+            padding: 6px;
+            margin-top: 2px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1 id="titulo1">Cribortech</h1>
+        <div class="nav_links">
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+            <a href="{% url 'customizar' %}">Customizar PC</a>
+            <a href="{% url 'perfilusuario' %}" class="perfil">Perfil</a>
+            <a href="{% url 'logout' %}" class="btn1">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="customizar_pc">
+        <h2>Buscar Placa Madre</h2>
+
+        <!-- Formulario de búsqueda -->
+        <form id="formulario-buscar" method="GET" action="{% url 'buscarplacamadre' %}">
+            <label>Ingrese el modelo o fabricante a buscar:</label>
+            <input type="text" name="consulta" placeholder="Ej: ASUS PRIME A520M-K" value="{{ consulta|default:'' }}" required>
+            <br><br>
+            <button type="submit" class="btn btn-info" id="btn-agregar-abajo">Buscar</button>
+            <a href="{% url 'adminplacamadre' %}" id="btn-volver-buscar">Volver</a>
+        </form>
+
+        <!-- Resultados de búsqueda como formulario readonly -->
+        {% if consulta %}
+            <h3>Resultados de búsqueda para: "{{ consulta }}"</h3>
+            {% if resultados %}
+                {% for placamadre in resultados %}
+                    <div class="formulario-resultados">
+                        <label>Fabricante:</label>
+                        <input type="text" value="{{ placamadre.fabricante }}" readonly>
+
+                        <label>Modelo:</label>
+                        <input type="text" value="{{ placamadre.modelo }}" readonly>
+
+                        <label>Formato:</label>
+                        <input type="text" value="{{ placamadre.formato }}" readonly>
+
+                        <label>Socket:</label>
+                        <input type="text" value="{{ placamadre.socket }}" readonly>
+
+                        <label>Slots Ram:</label>
+                        <input type="text" value="{{ placamadre.slots_ram }}" readonly>
+
+                        <label>Tipo Ram Compatibles:</label>
+                        <input type="text" value="{% for ram in placamadre.tipos_ram_compatibles.all %}{{ ram.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}" readonly>
+
+                        <label>Conectores Almacenamiento:</label>
+                        <input type="text" value="{% for conector in placamadre.conectores_almacenamiento.all %}{{ conector.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}" readonly>
+
+                        <label>Puerto GPU:</label>
+                        <input type="text" value="{{ placamadre.puerto_gpu }}" readonly>
+
+                        <label>Stock:</label>
+                        <input type="text" value="{{ placamadre.stock }}" readonly>
+
+                        <label>Precio :</label>
+                        <input type="text" value="{{ placamadre.precio }}" readonly>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No se encontraron procesadores con ese término.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+</body>
+</html>
+{% endblock container %}

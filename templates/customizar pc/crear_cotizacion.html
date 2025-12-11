@@ -1,0 +1,310 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'crearcotizacion.css' %}">
+    <title>Document</title>
+</head>
+<script>
+    function actualizarImagen(componente) {
+        const select = document.getElementById(componente);
+        const img = document.getElementById(`img_${componente}`);
+        const valor = select.value;
+
+        const extensiones = ['jpg', 'png', 'webp'];
+        let encontrada = false;
+
+        if (!valor) {
+            img.src = `/static/componentes/default_${componente}.png`;
+            return;
+        }
+
+        for (let ext of extensiones) {
+            const prueba = new Image();
+            prueba.src = `/static/componentes/${valor}.${ext}`;
+            prueba.onload = function () {
+                if (!encontrada) {
+                    img.src = prueba.src;
+                    encontrada = true;
+                }
+            };
+        }
+    }
+    function mostrarDetalles(componente) {
+        const select = document.getElementById(componente);
+        const selectedOption = select.options[select.selectedIndex];
+
+        // Ocultar todos los divs de detalles
+        const todosLosDetalles = document.querySelectorAll('.detalle-componente');
+        todosLosDetalles.forEach(div => {
+            div.style.display = 'none';
+        });
+
+        const divDetalles = document.getElementById(`detalles_${componente}`);
+        if (!select.value) {
+            return;
+        }
+
+        // Mostrar todos los atributos del option seleccionado
+        const atributos = selectedOption.attributes;
+        for (let i = 0; i < atributos.length; i++) {
+            const attr = atributos[i];
+            if (attr.name.startsWith('data-')) {
+                const nombreCampo = attr.name.replace('data-', '');
+                const spanElemento = document.getElementById(`${componente}_${nombreCampo}`);
+                if (spanElemento) {
+                    spanElemento.textContent = attr.value || "-";
+                }
+            }
+        }
+
+    divDetalles.style.display = 'block';
+}
+</script>
+<body>
+    
+    <div class="navbar">
+        <h1 id="titulo1">Cribortech</h1>
+        <div class="nav_links">
+            <a href="#">Inicio</a>
+            <a href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+            <a href="{% url 'customizar' %}">Customizar PC</a>
+            <a href="{% url 'perfilusuario' %}" class="perfil">Perfil</a>
+            <a href="{% url 'logout' %}" class="btn1">Cerrar Sesión</a>
+
+        </div>
+    </div>
+    
+        <div class="customizar_pc">
+    <h2>Arma tu PC</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="nombre">Nombre de la cotización:</label>
+        <input type="text" name="nombre" id="nombre" required>
+
+        <!-- CPU -->
+        <label for="cpu">Procesador (CPU):</label>
+        <select name="cpu" id="cpu" onchange="actualizarImagen('cpu'); mostrarDetalles('cpu');" class="select-form">
+            <option value="">-- Selecciona un CPU --</option>
+            {% for item in procesadores %}
+                <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-socket="{{ item.socket }}"
+                    data-nucleos="{{ item.nucleos }}"
+                    data-hilos="{{ item.hilos }}"
+                    data-frecuencia="{{ item.frecuencia }}"
+                    data-precio="{{ item.precio }}">
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <div id="detalles_cpu" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="cpu_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="cpu_modelo"></span></p>
+            <p><strong>Socket:</strong> <span id="cpu_socket"></span></p>
+            <p><strong>Núcleos:</strong> <span id="cpu_nucleos"></span></p>
+            <p><strong>Hilos:</strong> <span id="cpu_hilos"></span></p>
+            <p><strong>Frecuencia:</strong> <span id="cpu_frecuencia"></span></p>
+            <p><strong>Precio: $</strong> <span id="cpu_precio"></span></p>
+            
+        </div>
+        
+
+        <!-- Placa Madre -->
+        <label for="motherboard">Placa Madre:</label>
+        <select name="motherboard" id="motherboard" onchange="actualizarImagen('motherboard'); mostrarDetalles('motherboard');">
+            <option value="">-- Selecciona una placa madre --</option>
+        {% for item in placamadre %}
+            <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-formato="{{ item.formato }}"
+                    data-socket="{{ item.socket }}"
+                    data-slots_ram="{{ item.slots_ram }}"
+                    data-tipos_ram_compatibles="{% for f in item.tipos_ram_compatibles.all %}{{ f.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+                    data-conectores_almacenamiento="{% for f in item.conectores_almacenamiento.all %}{{ f.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+                    data-puerto_gpu="{{ item.puerto_gpu }}"
+                    data-precio="{{ item.precio }}">
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+        {% endfor %}
+        </select>   
+
+        <div id="detalles_motherboard" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="motherboard_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="motherboard_modelo"></span></p>
+            <p><strong>Formato:</strong> <span id="motherboard_formato"></span></p>
+            <p><strong>Socket:</strong> <span id="motherboard_socket"></span></p>
+            <p><strong>Slots Ram:</strong> <span id="motherboard_slots_ram"></span></p>
+            <p><strong>Rams Compatibles:</strong> <span id="motherboard_tipos_ram_compatibles"></span></p>
+            <p><strong>Conectores Almacenamiento:</strong> <span id="motherboard_conectores_almacenamiento"></span></p>
+            <p><strong>Puerto GPU: $</strong> <span id="motherboard_puerto_gpu"></span></p>
+            <p><strong>Precio: $</strong> <span id="motherboard_precio"></span></p>
+        </div>
+
+        <!-- RAM -->
+        <label for="ram">Memoria RAM:</label>
+        <select name="ram" id="ram" onchange="actualizarImagen('ram'); mostrarDetalles('ram');">
+            <option value="">-- Selecciona RAM --</option>
+        {% for item in ram %}
+            <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-frecuencia="{{ item.frecuencia }}"
+                    data-capacidad="{{ item.capacidad }}"
+                    data-tipo_ram="{{ item.tipo_ram }}"
+                    data-precio="{{ item.precio }}">
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+        {% endfor %}
+        </select>
+            <div id="detalles_ram" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="ram_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="ram_modelo"></span></p>
+            <p><strong>Frecuencia:</strong> <span id="ram_frecuencia"></span></p>
+            <p><strong>Capacidad:</strong> <span id="ram_capacidad"></span></p>
+            <p><strong>Tipo Ram:</strong> <span id="ram_tipo_ram"></span></p>
+            <p><strong>Precio: $</strong> <span id="ram_precio"></span></p>
+        </div>
+
+        <!-- GPU -->
+        <label for="gpu">Tarjeta Gráfica (GPU):</label>
+        <select name="gpu" id="gpu" onchange="actualizarImagen('gpu'); mostrarDetalles('gpu');">
+            <option value="">-- Selecciona una GPU --</option>
+            {% for item in gpu %}
+            <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-vram="{{ item.vram }}"
+                    data-puerto_requerido="{{ item.puerto_requerido }}"
+                    data-precio="{{ item.precio }}">
+                    
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+        {% endfor %}
+        </select>
+            <div id="detalles_gpu" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="gpu_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="gpu_modelo"></span></p>
+            <p><strong>VRAM:</strong> <span id="gpu_vram"></span></p>
+            <p><strong>Puerto requerido:</strong> <span id="gpu_puerto_requerido"></span></p>
+            <p><strong>Precio: $</strong> <span id="gpu_precio"></span></p>
+            </div>
+    
+
+        <!-- Almacenamiento -->
+        <label for="storage">Almacenamiento:</label>
+        <select name="storage" id="storage" onchange="actualizarImagen('storage'); mostrarDetalles('storage');">
+            <option value="">-- Selecciona un tipo de almacenamiento --</option>
+         {% for item in storage %}
+            <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-tipo_almacenamiento="{{ item.tipo_almacenamiento }}"
+                    data-capacidad="{{ item.capacidad }}"
+                    data-conector="{{ item.conector }}"
+                    data-velocidad_lectura="{{ item.velocidad_lectura }}"
+                    data-precio="{{ item.precio }}">
+                    
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+        {% endfor %}
+        </select>
+           <div id="detalles_storage" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="storage_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="storage_modelo"></span></p>
+            <p><strong>Tipo Almacenamiento:</strong> <span id="storage_tipo_almacenamiento"></span></p>
+            <p><strong>Capacidad:</strong> <span id="storage_capacidad"></span></p>
+            <p><strong>Conector:</strong> <span id="storage_conector"></span></p>
+            <p><strong>Velocidad:</strong> <span id="storage_velocidad_lectura"></span></p>
+            <p><strong>Precio: $</strong> <span id="storage_precio"></span></p>
+            </div>
+        
+        <!-- Gabinete -->
+        <label for="gabinete">Gabinete:</label>
+        <select name="gabinete" id="gabinete" onchange="actualizarImagen('gabinete'); mostrarDetalles('gabinete');">
+            <option value="">-- Selecciona un gabinete --</option>
+        {% for item in gabinete %}
+            <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-vidrio="{{ item.vidrio }}"
+                    data-formatos_compatibles="{% for f in item.formatos_compatibles.all %}{{ f.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+
+                    data-precio="{{ item.precio }}">
+                    
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+        {% endfor %}
+        </select>
+           <div id="detalles_gabinete" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="gabinete_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="gabinete_modelo"></span></p>
+            <p><strong>Vidrio:</strong> <span id="gabinete_vidrio"></span></p>
+            <p><strong>Formato Compatible:</strong> <span id="gabinete_formatos_compatibles"></span></p>
+            <p><strong>Precio: $</strong> <span id="gabinete_precio"></span></p>
+            </div>
+        
+
+        <!-- Fuente de poder -->
+        <label for="fuente">Fuente de Poder:</label>
+        <select name="fuente" id="fuente" onchange="actualizarImagen('fuente'); mostrarDetalles('fuente');">
+            <option value="">-- Selecciona una fuente de poder --</option>
+        {% for item in fuente %}
+            <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-potencia="{{ item.potencia }}"
+                    data-tamano="{{ item.tamano }}"
+                    data-certificacion="{{ item.certificacion }}"
+                    data-precio="{{ item.precio }}">
+                    
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+        {% endfor %}
+        </select>
+           <div id="detalles_fuente" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="fuente_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="fuente_modelo"></span></p>
+            <p><strong>Potencia:</strong> <span id="fuente_potencia"></span></p>
+            <p><strong>Tamaño:</strong> <span id="fuente_tamano"></span></p>
+            <p><strong>Certificación:</strong> <span id="fuente_certificacion"></span></p>
+            <p><strong>Precio: $</strong> <span id="fuente_precio"></span></p>
+            </div>
+
+        <!-- Cooler -->
+        <label for="cooler">Cooler:</label>
+        <select name="cooler" id="cooler" onchange="actualizarImagen('cooler'); mostrarDetalles('cooler');">
+            <option value="">-- Selecciona un cooler --</option>
+        {% for item in cooler %}
+            <option value="{{ item.id }}"
+                    data-fabricante="{{ item.fabricante }}"
+                    data-modelo="{{ item.modelo }}"
+                    data-dimensiones="{{ item.dimensiones }}"
+                    data-sockets_compatibles="{% for f in item.sockets_compatibles.all %}{{ f.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+                    data-precio="{{ item.precio }}">
+                    
+                    {{ item.fabricante }} {{ item.modelo }}
+                </option>
+        {% endfor %}
+        </select>
+            <div id="detalles_cooler" class="detalle-componente" style="display: none;">
+            <p><strong>Fabricante:</strong> <span id="cooler_fabricante"></span></p>
+            <p><strong>Modelo:</strong> <span id="cooler_modelo"></span></p>
+            <p><strong>Dimensiones:</strong> <span id="cooler_dimensiones"></span></p>
+            <p><strong>Sockets Compatibles:</strong> <span id="cooler_sockets_compatibles"></span></p>
+            <p><strong>Precio: $</strong> <span id="cooler_precio"></span></p>
+            </div>
+
+        <button type="submit" class="btn_form">Armar PC</button>
+    </form>
+    </div>
+</body>
+
+<script src="{% static 'js/compatibilidad.js' %}"></script>
+</html>

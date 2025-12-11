@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
+body{
+    background-image: url("/static/13454222_5258892.jpg");
+    background-size: 1600px 1200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+   
+}
+*{
+    margin: 0;
+    position: static;
+}
+#titulo1{
+    font-family: "Zen Dots", sans-serif;
+    position: relative;
+    left: 7px;
+    color: aliceblue;
+    bottom: 2px;
+}
+.btn1{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    left: 1400px;
+    text-decoration: none;
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 9px 10px;
+    border-color: rgb(197, 193, 193);
+    color: rgb(255, 255, 255);
+    background-color: rgb(64, 61, 153);
+    cursor: pointer;
+    bottom: 23px;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+.btn1:hover {
+    opacity: 0.8;
+}
+@keyframes rgbBorderBottom {
+    0% {
+        border-color: #8a2be2; /* púrpura intenso */
+    }
+    33% {
+        border-color: #ff00ff; /* fucsia neón */
+    }
+    66% {
+        border-color: #00ffff; /* cian neón */
+    }
+    100% {
+        border-color: #8a2be2;
+    }
+}
+.navbar{
+    border-bottom: 4px solid;
+    display: flex;
+    position: relative;
+    background-color: rgb(44, 43, 43);
+    padding: 19px 5px;
+    animation: rgbBorderBottom 7s linear infinite;
+}
+.nav_links{
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    bottom: -10px;
+    left: 405px;
+    display: flex;
+    gap: 25px; /* separa los links */
+}
+.nav_links a {
+    color:aliceblue;
+    text-decoration: none;
+    font-weight: bold;
+    left: -55px;
+    position: relative;
+    padding: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.nav_links a:hover {
+    color: #989798; /* cambia a fucsia al pasar el mouse */
+}
+.login{
+    position: relative;
+    margin: 100px auto;
+    bottom: -70px;
+    border: 2px solid black;
+    background-color: rgb(44, 43, 43);
+    padding: 70px 30px;
+    width: 300px;
+    color: aliceblue;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.colum_formulario {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.colum_formulario label {
+    width: 100px; /* Fijamos el ancho para alinear */
+}
+
+.colum_formulario input {
+    flex: 1; /* Que el input use el espacio restante */
+    padding: 5px;
+}
+.titulo_formulario{
+    position: relative;
+    bottom: 50px;
+    font-size: 22px;
+    text-align: center;
+}
+.registrarse a{
+    position: relative;
+    bottom: -10px;
+    font-size: 13px;
+    color: rgb(23, 133, 230);
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+.registrarse a:hover {
+    opacity: 0.8;
+}
+.btn_form a{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    text-decoration: none;
+    border: 2px solid;
+    border-radius: 3px;
+    padding: 7px 10px;
+    border-color: rgb(197, 193, 193);
+    color: rgb(255, 255, 255);
+    background-color: rgb(64, 61, 153);
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+    bottom: -35px;
+    left: 0px;
+}
+.btn_form a:hover {
+    opacity: 0.8;
+}

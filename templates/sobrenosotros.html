@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'sobrenosotros.css' %}">
+    <title>Cribortech</title>
+
+
+</head>
+<body>
+    <div class="navbar">
+        <h1 id="titulo1">Cribortech</h1>
+        <div class="nav_links">
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+            <a href="{% url 'customizar' %}">Customizar PC</a>
+            <a href="{% url 'perfilusuario' %}" class="perfil">Perfil</a>
+            <a href="{% url 'logout' %}" id="btn1">Cerrar Sesión</a>
+        </div>
+    </div>
+     
+
+    <section class="sobre-nosotros">
+    <div class="contenido">
+        <h2>Sobre Nosotros</h2>
+        <p>
+            En <strong>Cribortech</strong>, somos más que una tienda: somos apasionados del rendimiento, la estética y la personalización. 
+            Nos especializamos en la <strong>venta de computadores gamer de alto rendimiento</strong> y en el 
+            <strong>armado de equipos completamente customizados</strong>, adaptados a las necesidades específicas de cada cliente.
+        </p>
+        <p>
+            Creemos que cada jugador merece una máquina a la altura de su nivel. Por eso, ofrecemos una experiencia única donde puedes 
+            <strong>personalizar tu PC pieza por pieza</strong>, eligiendo desde la tarjeta gráfica hasta la iluminación RGB, todo con asesoría experta.
+        </p>
+        <p>
+            Desde nuestros inicios, hemos acompañado a gamers, streamers y entusiastas del hardware a construir no solo un computador, sino 
+            una verdadera extensión de su estilo y pasión.
+        </p>
+        <p class="firma">
+            🎮 <em>Potencia, estilo y confianza... eso es Cribortech.</em>
+        </p>
+    </div>
+</section>
+    <footer>
+        <p>&copy; 2025 Cribortech. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

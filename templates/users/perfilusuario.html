@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'crearcotizacion.css' %}" />
+    <title>Cribortech</title>
+    <script>
+        function getCSRFToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        }
+
+        function eliminarCotizacion(id) {
+            if (confirm("¿Deseas eliminar esta cotización?")) {
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/eliminar_cotizacion/" + id + "/";
+
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "csrfmiddlewaretoken";
+                input.value = getCSRFToken();
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function mostrarCotizacionSeleccionada() {
+            const select = document.getElementById("cotizaciones");
+            const opcion = select.options[select.selectedIndex];
+
+            if (!opcion || !opcion.value) {
+                document.getElementById("detalle-cotizacion").style.display = "none";
+                return;
+            }
+
+            document.getElementById("detalle-procesador").textContent = opcion.dataset.procesador || "-";
+            document.getElementById("detalle-placa").textContent = opcion.dataset.placa || "-";
+            document.getElementById("detalle-ram").textContent = opcion.dataset.ram || "-";
+            document.getElementById("detalle-gpu").textContent = opcion.dataset.gpu || "-";
+            document.getElementById("detalle-storage").textContent = opcion.dataset.storage || "-";
+            document.getElementById("detalle-fuente").textContent = opcion.dataset.fuente || "-";
+            document.getElementById("detalle-gabinete").textContent = opcion.dataset.gabinete || "-";
+            document.getElementById("detalle-cooler").textContent = opcion.dataset.cooler || "-";
+
+            document.getElementById("detalle-cotizacion").style.display = "block";
+
+            // Botón editar
+            document.getElementById("boton-editar").onclick = function () {
+                window.location.href = "/editar_cotizacion/" + opcion.value + "/";
+            };
+
+            // Botón eliminar
+            document.getElementById("boton-eliminar").onclick = function () {
+                eliminarCotizacion(opcion.value);
+            };
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <h1 id="titulo1">Cribortech</h1>
+        <div class="nav_links">
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+            <a href="{% url 'customizar' %}">Customizar PC</a>
+            <a href="{% url 'perfilusuario' %}" class="perfil">Perfil</a>
+            <a href="{% url 'logout' %}" class="btn1">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="customizar_pc">
+        <h2>Bienvenido {{ request.user.username }}</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Usuario: {{ request.user.username }}</label><br />
+            <label>Nombre: {{ request.user.first_name }}</label><br />
+            <label>Apellido: {{ request.user.last_name }}</label><br />
+            <label>Correo: {{ request.user.email }}</label><br />
+
+            <label for="cotizaciones">Tus Cotizaciones</label>
+            <select
+                name="cotizacion_id"
+                id="cotizaciones"
+                class="select-form"
+                onchange="mostrarCotizacionSeleccionada()"
+            >
+                <option value="">-- Selecciona una cotización --</option>
+                {% for cotizacion in cotizaciones %}
+                <option
+                    value="{{ cotizacion.id }}"
+                    data-procesador="{{ cotizacion.procesador }}"
+                    data-placa="{{ cotizacion.placa_madre }}"
+                    data-ram="{{ cotizacion.ram }}"
+                    data-gpu="{{ cotizacion.tarjeta_grafica }}"
+                    data-storage="{{ cotizacion.almacenamiento }}"
+                    data-fuente="{{ cotizacion.fuente_poder }}"
+                    data-gabinete="{{ cotizacion.gabinete }}"
+                    data-cooler="{{ cotizacion.cooler }}"
+                >
+                    {{ cotizacion.nombre }} - {{ cotizacion.fecha|date:"d/m/Y H:i" }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <div
+                id="detalle-cotizacion"
+                style="margin-top: 20px; display: none;"
+            >
+                <h3>Detalles de la Cotización:</h3>
+                <p><strong>Procesador:</strong> <span id="detalle-procesador"></span></p>
+                <p><strong>Placa Madre:</strong> <span id="detalle-placa"></span></p>
+                <p><strong>RAM:</strong> <span id="detalle-ram"></span></p>
+                <p><strong>GPU:</strong> <span id="detalle-gpu"></span></p>
+                <p><strong>Almacenamiento:</strong> <span id="detalle-storage"></span></p>
+                <p><strong>Fuente de Poder:</strong> <span id="detalle-fuente"></span></p>
+                <p><strong>Gabinete:</strong> <span id="detalle-gabinete"></span></p>
+                <p><strong>Cooler:</strong> <span id="detalle-cooler"></span></p>
+
+                <button id="boton-editar" type="button">Editar</button>
+                <button id="boton-eliminar" type="button">Borrar</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="{% static 'js/compatibilidad.js' %}"></script>
+</body>
+
+<script>
+    const editarURL = "{% url 'editar_cotizacion' 0 %}".replace("0", opcion.value);
+    window.location.href = editarURL;
+</script>
+</html>

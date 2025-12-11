@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'crearcotizacion.css' %}" />
+    <title>Cribortech</title>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1 id="titulo1">Cribortech</h1>
+        <div class="nav_links">
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+            <a href="{% url 'customizar' %}">Customizar PC</a>
+            <a href="{% url 'perfilusuario' %}" class="perfil">Perfil</a>
+            <a href="{% url 'logout' %}" class="btn1">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="customizar_pc">
+    <h2>Bienvenido Administrador</h2>
+    <form id="adminForm">
+        {% csrf_token %}
+
+        <label for="componentes">Modulos de Componentes:</label>
+        <select id="componentes">
+            <option value="">Selecciona componente</option>
+            <option value="{% url 'adminprocesador' %}">Procesador</option>
+            <option value="{% url 'adminplacamadre' %}">Placa Madre</option>
+            <option value="{% url 'admintarjetagrafica' %}">Tarjeta Gráfica</option>
+            <option value="{% url 'admingabinete' %}">Gabinete</option>
+        </select>
+        <button type="submit" id="btn-agregar-abajo">Administrar</button>
+        <div id="detalle-usuario" class="detalle-info"></div>
+    </form>
+</div>
+
+    <script src="{% static 'js/moduloscomponentes.js' %}"></script>
+</body>
+</html>

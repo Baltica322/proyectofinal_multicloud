@@ -76,8 +76,6 @@ DATABASES = {
         'NAME': "cribortech_bdd",
         "USER": "root",
         "PASSWORD": "241005",
-        "HOST": "proyecto-final-db.cdicemucwpql.us-east-1.rds.amazonaws.com",
-        "PORT": "3306",
     }
 }
 

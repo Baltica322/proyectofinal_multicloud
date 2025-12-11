@@ -75,7 +75,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "cribortech_bdd",
         "USER": "root",
-        "PASSWORD": ""
+        "PASSWORD": "241005",
+        "HOST": "proyecto-final-db.cdicemucwpql.us-east-1.rds.amazonaws.com",
+        "PORT": "3306",
     }
 }
 
